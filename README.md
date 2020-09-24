@@ -1,6 +1,6 @@
 ## :warning: This library is WIP. Will be stable once v0.1.0 is released.
 
-# EchoFetch
+# EchoLink
 
 [![build status](https://img.shields.io/travis/maartenvn/echolink)](https://travis-ci.org/maartenvn/EchoLink)
 [![npm version](https://img.shields.io/npm/v/echolink)](https://www.npmjs.com/echolink)
@@ -8,7 +8,7 @@
 
 EchoLink is a HTTP client made for browser & node.js with frontend frameworks in mind based on Axios.
 
-## [Documentation](https://maartenvn.github.io/EchoFetch/)
+## [Documentation](https://maartenvn.github.io/EchoLink/)
 
 You can find the full documentation here: [Documentation](https://maartenvn.github.io/EchoLink/)
 
