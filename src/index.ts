@@ -9,8 +9,6 @@ export * from "./EchoBuilder";
  * Types
  */
 export * from "./types/EchoError";
-export * from "./types/EchoPromise";
-export * from "./types/EchoPromiseStatus";
 export * from "./types/EchoRequest";
 export * from "./types/EchoResponse";
 

@@ -1,6 +1,4 @@
 import {EchoRequest} from "./types/EchoRequest";
-import {EchoPromise} from "./types/EchoPromise";
-import {EchoPromiseStatus} from "./types/EchoPromiseStatus";
 import axios from "axios";
 
 export class EchoBuilder<T> {
@@ -206,7 +204,7 @@ export class EchoBuilder<T> {
     /**
      * Fetch the data from the server with the constructed request.
      */
-    execute(): EchoPromise<T> {
+    execute(): Promise<T> {
 
         // Shorten Request for ease of access
         const req = this.request;
@@ -215,68 +213,16 @@ export class EchoBuilder<T> {
         let url = req.baseUrl ? req.baseUrl + req.url : req.url ?? "";
 
         // Construct the fetch request
-        const res = axios(url, {
+        return axios(url, {
             method: req.method ?? "GET",
             headers: req.headers ?? [],
             data: JSON.stringify(req.body)
         })
             .then(res => {
-
-                // Update the EchoPromise with the response & data.
-                echoPromise.response = res;
-                echoPromise.response = res.data;
-
-                // Update the EchoPromise status.
-                echoPromise.status = EchoPromiseStatus.SUCCESS;
-
-                // Return the data.
                 return res.data;
             })
             .catch(err => {
-
-                // Update the EchoPromise with the error.
-                echoPromise.error = err;
-
-                // Update the EchoPromise status.
-                echoPromise.status = EchoPromiseStatus.SUCCESS;
+                return err;
             });
-
-        // Construct the EchoPromise.
-        const echoPromise = res as Partial<EchoPromise<T>>;
-
-        // Set the initial status to loading.
-        echoPromise.status = EchoPromiseStatus.LOADING;
-        echoPromise.request = req;
-
-        // Implement the EchoPromise interface functions.
-        echoPromise.isLoading = () => echoPromise.status === EchoPromiseStatus.LOADING;
-        echoPromise.isSuccess = () => echoPromise.status === EchoPromiseStatus.SUCCESS;
-        echoPromise.isError = () => echoPromise.status === EchoPromiseStatus.ERROR;
-
-        echoPromise.requireData = () => {
-            if (echoPromise.data === undefined) {
-                throw new Error("'data' is undefined.")
-            }
-
-            return echoPromise.data;
-        }
-
-        echoPromise.requireResponse = () => {
-            if (echoPromise.response === undefined) {
-                throw new Error("'response' is undefined.")
-            }
-
-            return echoPromise.response;
-        }
-
-        echoPromise.requireError = () => {
-            if (echoPromise.error === undefined) {
-                throw new Error("'error' is undefined.")
-            }
-
-            return echoPromise.error;
-        }
-
-        return echoPromise as EchoPromise<T>;
     }
 }
