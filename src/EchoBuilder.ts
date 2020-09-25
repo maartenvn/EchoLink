@@ -1,21 +1,29 @@
-import {EchoRequest} from "./types/EchoRequest";
 import axios from "axios";
+import {EchoOptions} from "./types/EchoOptions";
 
 export class EchoBuilder<T> {
 
     /**
-     * Request to send.
+     * Options.
      */
-    private request: EchoRequest = {};
+    private opts: EchoOptions = {};
+
+    /**
+     * (Optional) Constructor
+     * @param options Request options
+     */
+    constructor(options?: EchoOptions) {
+        this.opts = { ...options ?? {}};
+    }
 
     /**
      * Set the base URL of the request.
      * @param baseUrl Base URL to send a request to
      */
     baseUrl(baseUrl: string): EchoBuilder<T> {
-        this.request.baseUrl = baseUrl;
+        this.opts.baseUrl = baseUrl;
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -23,9 +31,9 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     url(url: string): EchoBuilder<T> {
-        this.request.url = url;
+        this.opts.url = url;
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -33,10 +41,10 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     get(url: string): EchoBuilder<T> {
-        this.request.url = url;
-        this.request.method = "GET";
+        this.opts.url = url;
+        this.opts.method = "GET";
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -44,10 +52,10 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     post(url: string): EchoBuilder<T> {
-        this.request.url = url;
-        this.request.method = "POST";
+        this.opts.url = url;
+        this.opts.method = "POST";
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -55,10 +63,10 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     patch(url: string): EchoBuilder<T> {
-        this.request.url = url;
-        this.request.method = "PATCH";
+        this.opts.url = url;
+        this.opts.method = "PATCH";
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -66,10 +74,10 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     put(url: string): EchoBuilder<T> {
-        this.request.url = url;
-        this.request.method = "PUT";
+        this.opts.url = url;
+        this.opts.method = "PUT";
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -77,10 +85,10 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     delete(url: string): EchoBuilder<T> {
-        this.request.url = url;
-        this.request.method = "DELETE";
+        this.opts.url = url;
+        this.opts.method = "DELETE";
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -88,10 +96,10 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     head(url: string): EchoBuilder<T> {
-        this.request.url = url;
-        this.request.method = "HEAD";
+        this.opts.url = url;
+        this.opts.method = "HEAD";
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -99,10 +107,10 @@ export class EchoBuilder<T> {
      * @param url URL to send a request to
      */
     options(url: string): EchoBuilder<T> {
-        this.request.url = url;
-        this.request.method = "OPTIONS";
+        this.opts.url = url;
+        this.opts.method = "OPTIONS";
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -110,9 +118,9 @@ export class EchoBuilder<T> {
      * @param method Method of the request
      */
     method(method: "GET" | "POST" | "PATCH" | "PUT" | "DELETE" | "HEAD" | "OPTIONS"): EchoBuilder<T> {
-        this.request.method = method;
+        this.opts.method = method;
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -121,9 +129,9 @@ export class EchoBuilder<T> {
      * @param value Value of the header
      */
     header(name: string, value: string): EchoBuilder<T> {
-        this.request.headers = {...this.request.headers, ...{[name]: value}}
+        this.opts.headers = {...this.opts.headers, ...{[name]: value}}
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -131,9 +139,9 @@ export class EchoBuilder<T> {
      * @param headers Headers of the request.
      */
     headers(headers: HeadersInit): EchoBuilder<T> {
-        this.request.headers = {...this.request.headers, ...headers};
+        this.opts.headers = {...this.opts.headers, ...headers};
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -143,9 +151,9 @@ export class EchoBuilder<T> {
      * @param value Value of the query parameter
      */
     parameter(name: string, value: string): EchoBuilder<T> {
-        this.request.parameters = {...this.request.parameters, ...{[name]: value}}
+        this.opts.parameters = {...this.opts.parameters, ...{[name]: value}}
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
 
@@ -154,9 +162,9 @@ export class EchoBuilder<T> {
      * @param parameters Query parameters of the request.
      */
     parameters(parameters: { [key: string]: unknown }): EchoBuilder<T> {
-        this.request.parameters = {...this.request.parameters, ...parameters};
+        this.opts.parameters = {...this.opts.parameters, ...parameters};
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -185,10 +193,10 @@ export class EchoBuilder<T> {
      * @param value Value to replace the placeholder with
      */
     path(name: string, value: string): EchoBuilder<T> {
-        this.request.url?.replace(new RegExp(`:${name}`, "g"), value);
-        this.request.url?.replace(new RegExp(`:\{${name}\}`, "g"), value);
+        this.opts.url?.replace(new RegExp(`:${name}`, "g"), value);
+        this.opts.url?.replace(new RegExp(`:\{${name}\}`, "g"), value);
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -196,9 +204,9 @@ export class EchoBuilder<T> {
      * @param body Body of the request
      */
     body(body: any): EchoBuilder<T> {
-        this.request.body = body;
+        this.opts.body = body;
 
-        return this;
+        return new EchoBuilder<T>(this.opts);
     }
 
     /**
@@ -206,17 +214,17 @@ export class EchoBuilder<T> {
      */
     execute(): Promise<T> {
 
-        // Shorten Request for ease of access
-        const req = this.request;
+        // Shorten options for ease of access
+        const opts = this.opts;
 
         // Construct the URL
-        let url = req.baseUrl ? req.baseUrl + req.url : req.url ?? "";
+        let url = opts.baseUrl ? opts.baseUrl + opts.url : opts.url ?? "";
 
         // Construct the fetch request
         return axios(url, {
-            method: req.method ?? "GET",
-            headers: req.headers ?? [],
-            data: JSON.stringify(req.body)
+            method: opts.method ?? "GET",
+            headers: opts.headers ?? [],
+            data: JSON.stringify(opts.body)
         })
             .then(res => {
                 return res.data;

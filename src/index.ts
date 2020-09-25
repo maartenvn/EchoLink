@@ -15,4 +15,4 @@ export * from "./types/EchoResponse";
 /**
  * Default export
  */
-export default () => new EchoBuilder();
+export default new EchoBuilder();
