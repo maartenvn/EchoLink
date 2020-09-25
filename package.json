@@ -1,6 +1,6 @@
 {
     "name": "echolink",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "HTTP client made for browser & node.js with frontend frameworks in mind",
     "main": "dist/echolink.common.js",
     "browser": "dist/echolink.umd.js",
