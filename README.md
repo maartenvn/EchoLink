@@ -28,6 +28,6 @@ yarn add echolink
 
 ## Simple usage
 
-// TODO
+:warning: Documentation will be available once 0.1.0 is released
 
 More examples & documentation: [Documentation](https://maartenvn.github.io/EchoLink/)
